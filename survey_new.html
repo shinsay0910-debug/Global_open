@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Phiếu Khảo Sát Tính Công Dân Toàn Cầu</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background: transparent;
+    color: #1a1a2e;
+    padding: 0;
+    font-size: 15px;
+    line-height: 1.7;
+  }
+  .container {
+    max-width: 100%;
+    width: 100%;
+    margin: 0 auto;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.10);
+    overflow: hidden;
+  }
+  .header {
+    background: linear-gradient(135deg, #1a6b3a 0%, #2e8b57 100%);
+    color: white;
+    padding: 36px 36px 28px;
+    text-align: center;
+  }
+  .header h1 { font-size: 1.5rem; font-weight: 700; margin-bottom: 6px; }
+  .header h2 { font-size: 1.1rem; font-weight: 400; opacity: 0.9; }
+  .intro {
+    background: #f8fdf9;
+    border-left: 4px solid #2e8b57;
+    margin: 24px 32px;
+    padding: 16px 20px;
+    border-radius: 0 8px 8px 0;
+    font-size: 14px;
+    color: #333;
+  }
+  .section {
+    margin: 0 32px 28px;
+  }
+  .section-title {
+    background: #2e8b57;
+    color: white;
+    padding: 10px 18px;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 700;
+    margin-bottom: 16px;
+  }
+  .subsection-title {
+    background: #e8f5ec;
+    color: #1a6b3a;
+    padding: 8px 14px;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 0.93rem;
+    margin: 16px 0 10px;
+  }
+  .question-group {
+    margin-bottom: 16px;
+  }
+  label.q-label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: #1a1a2e;
+  }
+  .options-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .options-row label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+    font-weight: 400;
+    white-space: nowrap;
+  }
+  input[type="radio"], input[type="checkbox"] {
+    accent-color: #2e8b57;
+    width: 16px; height: 16px;
+  }
+  input[type="text"] {
+    border: 1.5px solid #ccc;
+    border-radius: 6px;
+    padding: 8px 12px;
+    font-size: 14px;
+    width: 100%;
+    max-width: 400px;
+    margin-top: 4px;
+  }
+  input[type="text"]:focus { border-color: #2e8b57; outline: none; }
+  /* 5점 척도 표 */
+  .scale-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 6px;
+    font-size: 13.5px;
+  }
+  .scale-table th {
+    background: #e8f5ec;
+    color: #1a6b3a;
+    padding: 8px 6px;
+    text-align: center;
+    font-weight: 600;
+    border: 1px solid #c8e6c9;
+  }
+  .scale-table th.q-col { text-align: left; width: 55%; }
+  .scale-table td {
+    padding: 8px 6px;
+    text-align: center;
+    border: 1px solid #e0e0e0;
+    vertical-align: middle;
+  }
+  .scale-table td.q-text { text-align: left; padding-left: 10px; color: #222; }
+  .scale-table tr:nth-child(even) { background: #fafafa; }
+  .scale-table tr:hover { background: #f0faf2; }
+  .scale-table input[type="radio"] { cursor: pointer; }
+  .group-header td {
+    background: #d4edda;
+    font-weight: 700;
+    color: #1a6b3a;
+    font-size: 13px;
+    padding: 6px 10px;
+    text-align: left !important;
+  }
+  /* D섹션 체크박스 */
+  .checkbox-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 6px 0 10px;
+  }
+  .checkbox-group label {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 13.5px;
+    cursor: pointer;
+    background: #f8f8f8;
+    padding: 5px 10px;
+    border-radius: 20px;
+    border: 1px solid #ddd;
+    transition: all 0.2s;
+  }
+  .checkbox-group label:hover { background: #e8f5ec; border-color: #2e8b57; }
+  .d-item {
+    background: #f9f9f9;
+    border: 1px solid #e5e5e5;
+    border-radius: 8px;
+    padding: 14px 16px;
+    margin-bottom: 14px;
+  }
+  .d-item .d-q { font-weight: 600; margin-bottom: 10px; color: #1a1a2e; font-size: 14px; }
+  .d-arrow { font-size: 13px; color: #1a6b3a; font-weight: 600; margin: 8px 0 4px; }
+  textarea {
+    width: 100%;
+    border: 1.5px solid #ccc;
+    border-radius: 6px;
+    padding: 10px 12px;
+    font-size: 14px;
+    font-family: inherit;
+    resize: vertical;
+    min-height: 80px;
+  }
+  textarea:focus { border-color: #2e8b57; outline: none; }
+  .submit-area {
+    text-align: center;
+    padding: 28px 32px 36px;
+  }
+  .btn-submit {
+    background: linear-gradient(135deg, #1a6b3a, #2e8b57);
+    color: white;
+    border: none;
+    padding: 14px 48px;
+    font-size: 1rem;
+    font-weight: 700;
+    border-radius: 50px;
+    cursor: pointer;
+    box-shadow: 0 4px 16px rgba(46,139,87,0.3);
+    transition: all 0.2s;
+  }
+  .btn-submit:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(46,139,87,0.4); }
+  .btn-submit:active { transform: translateY(0); }
+  #success-msg {
+    display: none;
+    background: #e8f5ec;
+    border: 2px solid #2e8b57;
+    border-radius: 10px;
+    padding: 24px;
+    margin: 24px 32px;
+    text-align: center;
+    color: #1a6b3a;
+    font-size: 1.1rem;
+    font-weight: 600;
+  }
+  .scale-legend {
+    font-size: 12.5px;
+    color: #555;
+    margin-bottom: 8px;
+    font-style: italic;
+  }
+  .required { color: #e53935; margin-left: 2px; }
+  hr { border: none; border-top: 1.5px solid #e0e0e0; margin: 20px 0; }
+  @media (max-width: 600px) {
+    .section { margin: 0 10px 20px; }
+    .header { padding: 20px 12px 16px; }
+    .intro { margin: 12px 10px; }
+    .scale-table { font-size: 11px; }
+    .scale-table th.q-col { width: 40%; }
+    .options-row { flex-direction: column; gap: 6px; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="header">
+    <h1>세계시민성 측정 설문지</h1>
+    <h2>PHIẾU KHẢO SÁT TÍNH CÔNG DÂN TOÀN CẦU</h2>
+  </div>
+  <div class="intro">
+    Xin chào các bạn. Cô là Shin A Young.
+Đây là bảng khảo sát nhằm đánh giá năng lực công dân toàn cầu của các bạn và xem xét liệu chương trình đào tạo của khoa có phù hợp trong việc nâng cao năng lực công dân toàn cầu hay không.
+Nội dung khảo sát có thể hơi khó và sẽ mất một chút thời gian để hoàn thành. Tuy nhiên, cô rất mong các bạn dành thời gian trả lời một cách nghiêm túc để góp phần vào sự phát triển của khoa.
+Xin chân thành cảm ơn sự hợp tác của các bạn.
+  </div>
+  <form id="surveyForm">
+    <!-- ===== A. 기본 정보 ===== -->
+    <div class="section">
+      <div class="section-title">A. Thông tin cơ bản (기본 정보)</div>
+      <div class="question-group">
+        <label class="q-label">Giới tính (성별) <span class="required">*</span></label>
+        <div class="options-row">
+          <label><input type="radio" name="gioitinh" value="Nam" required> Nam (남)</label>
+          <label><input type="radio" name="gioitinh" value="Nữ"> Nữ (여)</label>
+        </div>
+      </div>
+      <div class="question-group">
+        <label class="q-label">Năm học (학년) <span class="required">*</span></label>
+        <div class="options-row">
+          <label><input type="radio" name="namhoc" value="Năm 1" required> Năm 1 (1학년)</label>
+          <label><input type="radio" name="namhoc" value="Năm 2"> Năm 2 (2학년)</label>
+          <label><input type="radio" name="namhoc" value="Năm 3"> Năm 3 (3학년)</label>
+          <label><input type="radio" name="namhoc" value="Năm 4"> Năm 4 (4학년)</label>
+        </div>
+      </div>
+      <div class="question-group">
+        <label class="q-label">MSSV (학번) <span class="required">*</span></label>
+        <input type="text" name="mssv" placeholder="Nhập MSSV..." required>
+      </div>
+      <div class="question-group">
+        <label class="q-label">Trình độ tiếng Hàn (한국어 수준) <span class="required">*</span></label>
+        <div class="options-row">
+          <label><input type="radio" name="trinhdo" value="Sơ cấp" required> Sơ cấp (초급)</label>
+          <label><input type="radio" name="trinhdo" value="Trung cấp"> Trung cấp (중급)</label>
+          <label><input type="radio" name="trinhdo" value="Cao cấp"> Cao cấp (고급)</label>
+        </div>
+      </div>
+      <div class="question-group">
+        <label class="q-label">Thời gian học tiếng Hàn (한국어 학습 기간) <span class="required">*</span></label>
+        <div class="options-row">
+          <label><input type="radio" name="thoigian" value="Dưới 1 năm" required> Dưới 1 năm</label>
+          <label><input type="radio" name="thoigian" value="1–2 năm"> 1–2 năm</label>
+          <label><input type="radio" name="thoigian" value="3–4 năm"> 3–4 năm</label>
+          <label><input type="radio" name="thoigian" value="Trên 5 năm"> Trên 5 năm</label>
+        </div>
+      </div>
+      <div class="question-group">
+        <label class="q-label">Kinh nghiệm sống/thăm Hàn Quốc (한국 방문/거주 경험) <span class="required">*</span></label>
+        <div class="options-row">
+          <label><input type="radio" name="kinhnghiem" value="Không" required> Không (없음)</label>
+          <label><input type="radio" name="kinhnghiem" value="Thăm ngắn hạn"> Thăm ngắn hạn (단기 방문)</label>
+          <label><input type="radio" name="kinhnghiem" value="Sống ≥6 tháng"> Sống ≥6 tháng (6개월 이상 거주)</label>
+        </div>
+      </div>
+    </div>
+    <!-- ===== B. 인식 ===== -->
+    <div class="section">
+      <div class="section-title">B. Nhận thức về thuật ngữ công dân toàn cầu (세계시민성 용어 인식)</div>
+      <div class="question-group">
+        <label class="q-label">B1. Trước khi làm khảo sát hôm nay, bạn đã từng nghe thuật ngữ '세계시민의식' hoặc 'Global Citizenship' chưa? <span class="required">*</span></label>
+        <div class="options-row">
+          <label><input type="radio" name="b1" value="Có" required> Có (예)</label>
+          <label><input type="radio" name="b1" value="Không"> Không (아니오)</label>
+        </div>
+      </div>
+      <div class="question-group">
+        <label class="q-label">B2. <em>(Chỉ trả lời nếu chọn 'Có' ở B1)</em> Tôi có thể giải thích ý nghĩa của 'Global Citizenship' cho người khác.</label>
+        <div class="scale-legend">① Hoàn toàn không đồng ý &nbsp; ② Không đồng ý &nbsp; ③ Bình thường &nbsp; ④ Đồng ý &nbsp; ⑤ Hoàn toàn đồng ý</div>
+        <table class="scale-table">
+          <thead>
+            <tr>
+              <th class="q-col">Nội dung</th>
+              <th>① <br>Hoàn toàn không ĐY</th>
+              <th>② <br>Không ĐY</th>
+              <th>③ <br>Bình thường</th>
+              <th>④ <br>Đồng ý</th>
+              <th>⑤ <br>Hoàn toàn ĐY</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="q-text">Tôi có thể giải thích ý nghĩa của 'tính công dân toàn cầu (Global Citizenship)' cho người khác.</td>
+              <td><input type="radio" name="b2" value="1"></td>
+              <td><input type="radio" name="b2" value="2"></td>
+              <td><input type="radio" name="b2" value="3"></td>
+              <td><input type="radio" name="b2" value="4"></td>
+              <td><input type="radio" name="b2" value="5"></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <!-- ===== C. 세계시민성 측정 ===== -->
+    <div class="section">
+      <div class="scale-legend" style="margin-bottom:12px;">① Hoàn toàn không đồng ý &nbsp; ② Không đồng ý &nbsp; ③ Bình thường &nbsp; ④ Đồng ý &nbsp; ⑤ Hoàn toàn đồng ý</div>
+      <div class="section-title">C. Đo lường tính công dân toàn cầu (세계시민성 측정)</div>
+      <table class="scale-table">
+        <thead>
+          <tr>
+            <th class="q-col">Nội dung / 문항</th>
+            <th>①</th><th>②</th><th>③</th><th>④</th><th>⑤</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="group-header"><td colspan="6">지식 / Kiến thức (C1–C7)</td></tr>
+          <tr><td class="q-text">C1. Tôi biết rằng các vấn đề thế giới là sự kết nối phức tạp của nhiều yếu tố.</td>
+            <td><input type="radio" name="c1" value="1" required></td><td><input type="radio" name="c1" value="2"></td><td><input type="radio" name="c1" value="3"></td><td><input type="radio" name="c1" value="4"></td><td><input type="radio" name="c1" value="5"></td></tr>
+          <tr><td class="q-text">C2. Tôi biết rằng đói nghèo và bất bình đẳng tồn tại trên khắp thế giới.</td>
+            <td><input type="radio" name="c2" value="1" required></td><td><input type="radio" name="c2" value="2"></td><td><input type="radio" name="c2" value="3"></td><td><input type="radio" name="c2" value="4"></td><td><input type="radio" name="c2" value="5"></td></tr>
+          <tr><td class="q-text">C3. Tôi biết rằng đói nghèo và bất bình đẳng có liên quan đến cấu trúc chính trị, xã hội.</td>
+            <td><input type="radio" name="c3" value="1" required></td><td><input type="radio" name="c3" value="2"></td><td><input type="radio" name="c3" value="3"></td><td><input type="radio" name="c3" value="4"></td><td><input type="radio" name="c3" value="5"></td></tr>
+          <tr><td class="q-text">C4. Tôi biết rằng ở nhiều nơi trên thế giới có những nền văn hóa đặc trưng riêng biệt.</td>
+            <td><input type="radio" name="c4" value="1" required></td><td><input type="radio" name="c4" value="2"></td><td><input type="radio" name="c4" value="3"></td><td><input type="radio" name="c4" value="4"></td><td><input type="radio" name="c4" value="5"></td></tr>
+          <tr><td class="q-text">C5. Tôi biết rằng định kiến và phân biệt đối xử về chủng tộc hay văn hóa tồn tại ở nhiều nơi trên thế giới.</td>
+            <td><input type="radio" name="c5" value="1" required></td><td><input type="radio" name="c5" value="2"></td><td><input type="radio" name="c5" value="3"></td><td><input type="radio" name="c5" value="4"></td><td><input type="radio" name="c5" value="5"></td></tr>
+          <tr><td class="q-text">C6. Tôi biết rằng các nền văn hóa đa dạng có những điểm phổ quát chung.</td>
+            <td><input type="radio" name="c6" value="1" required></td><td><input type="radio" name="c6" value="2"></td><td><input type="radio" name="c6" value="3"></td><td><input type="radio" name="c6" value="4"></td><td><input type="radio" name="c6" value="5"></td></tr>
+          <tr><td class="q-text">C7. Tôi biết rằng các vấn đề môi trường xảy ra ở quốc gia khác cũng ảnh hưởng đến đất nước chúng ta.</td>
+            <td><input type="radio" name="c7" value="1" required></td><td><input type="radio" name="c7" value="2"></td><td><input type="radio" name="c7" value="3"></td><td><input type="radio" name="c7" value="4"></td><td><input type="radio" name="c7" value="5"></td></tr>
+          <tr class="group-header"><td colspan="6">분석적 스킬 / Kỹ năng phân tích (C8–C12)</td></tr>
+          <tr><td class="q-text">C8. Tôi có thể đánh giá ưu, nhược điểm của các phương án khác nhau để giải quyết vấn đề.</td>
+            <td><input type="radio" name="c8" value="1" required></td><td><input type="radio" name="c8" value="2"></td><td><input type="radio" name="c8" value="3"></td><td><input type="radio" name="c8" value="4"></td><td><input type="radio" name="c8" value="5"></td></tr>
+          <tr><td class="q-text">C9. Tôi có thể tìm ra phương án phù hợp để đạt mục tiêu của cộng đồng mình thuộc về.</td>
+            <td><input type="radio" name="c9" value="1" required></td><td><input type="radio" name="c9" value="2"></td><td><input type="radio" name="c9" value="3"></td><td><input type="radio" name="c9" value="4"></td><td><input type="radio" name="c9" value="5"></td></tr>
+          <tr><td class="q-text">C10. Tôi có thể tư duy phản biện về các vấn đề xã hội toàn cầu.</td>
+            <td><input type="radio" name="c10" value="1" required></td><td><input type="radio" name="c10" value="2"></td><td><input type="radio" name="c10" value="3"></td><td><input type="radio" name="c10" value="4"></td><td><input type="radio" name="c10" value="5"></td></tr>
+          <tr><td class="q-text">C11. Tôi có thể phân tích các vấn đề xã hội toàn cầu một cách hợp lý và lý trí.</td>
+            <td><input type="radio" name="c11" value="1" required></td><td><input type="radio" name="c11" value="2"></td><td><input type="radio" name="c11" value="3"></td><td><input type="radio" name="c11" value="4"></td><td><input type="radio" name="c11" value="5"></td></tr>
+          <tr><td class="q-text">C12. Tôi có thể vận dụng kiến thức và nguyên lý cơ bản để hiểu tình hình toàn cầu.</td>
+            <td><input type="radio" name="c12" value="1" required></td><td><input type="radio" name="c12" value="2"></td><td><input type="radio" name="c12" value="3"></td><td><input type="radio" name="c12" value="4"></td><td><input type="radio" name="c12" value="5"></td></tr>
+          <tr class="group-header"><td colspan="6">사회적 스킬 / Kỹ năng xã hội (C13–C15)</td></tr>
+          <tr><td class="q-text">C13. Tôi có thể nắm bắt điểm mạnh và điểm yếu của bản thân với tư cách thành viên cộng đồng toàn cầu.</td>
+            <td><input type="radio" name="c13" value="1" required></td><td><input type="radio" name="c13" value="2"></td><td><input type="radio" name="c13" value="3"></td><td><input type="radio" name="c13" value="4"></td><td><input type="radio" name="c13" value="5"></td></tr>
+          <tr><td class="q-text">C14. Tôi có thể thảo luận hòa nhã với những người có ý kiến khác nhau.</td>
+            <td><input type="radio" name="c14" value="1" required></td><td><input type="radio" name="c14" value="2"></td><td><input type="radio" name="c14" value="3"></td><td><input type="radio" name="c14" value="4"></td><td><input type="radio" name="c14" value="5"></td></tr>
+          <tr><td class="q-text">C15. Tôi có thể kết nối, xây dựng mạng lưới với các thành viên cộng đồng xã hội đa dạng.</td>
+            <td><input type="radio" name="c15" value="1" required></td><td><input type="radio" name="c15" value="2"></td><td><input type="radio" name="c15" value="3"></td><td><input type="radio" name="c15" value="4"></td><td><input type="radio" name="c15" value="5"></td></tr>
+          <tr class="group-header"><td colspan="6">태도 / Thái độ (C16–C22)</td></tr>
+          <tr><td class="q-text">C16. Tôi cho rằng phẩm giá con người là một giá trị quan trọng.</td>
+            <td><input type="radio" name="c16" value="1" required></td><td><input type="radio" name="c16" value="2"></td><td><input type="radio" name="c16" value="3"></td><td><input type="radio" name="c16" value="4"></td><td><input type="radio" name="c16" value="5"></td></tr>
+          <tr><td class="q-text">C17. Tôi tôn trọng quan điểm và cảm xúc của người khác.</td>
+            <td><input type="radio" name="c17" value="1" required></td><td><input type="radio" name="c17" value="2"></td><td><input type="radio" name="c17" value="3"></td><td><input type="radio" name="c17" value="4"></td><td><input type="radio" name="c17" value="5"></td></tr>
+          <tr><td class="q-text">C18. Tôi tin rằng mọi người đều có quyền bình đẳng như nhau.</td>
+            <td><input type="radio" name="c18" value="1" required></td><td><input type="radio" name="c18" value="2"></td><td><input type="radio" name="c18" value="3"></td><td><input type="radio" name="c18" value="4"></td><td><input type="radio" name="c18" value="5"></td></tr>
+          <tr><td class="q-text">C19. Tôi tôn trọng sự khác biệt giữa các nền văn hóa đa dạng.</td>
+            <td><input type="radio" name="c19" value="1" required></td><td><input type="radio" name="c19" value="2"></td><td><input type="radio" name="c19" value="3"></td><td><input type="radio" name="c19" value="4"></td><td><input type="radio" name="c19" value="5"></td></tr>
+          <tr><td class="q-text">C20. Tôi cho rằng các lối sống đa dạng trên thế giới mang những giá trị văn hóa khác nhau.</td>
+            <td><input type="radio" name="c20" value="1" required></td><td><input type="radio" name="c20" value="2"></td><td><input type="radio" name="c20" value="3"></td><td><input type="radio" name="c20" value="4"></td><td><input type="radio" name="c20" value="5"></td></tr>
+          <tr><td class="q-text">C21. Tôi công nhận tôn giáo của người khác.</td>
+            <td><input type="radio" name="c21" value="1" required></td><td><input type="radio" name="c21" value="2"></td><td><input type="radio" name="c21" value="3"></td><td><input type="radio" name="c21" value="4"></td><td><input type="radio" name="c21" value="5"></td></tr>
+          <tr><td class="q-text">C22. Tôi cho rằng việc hợp tác với người có hoàn cảnh đa dạng là quan trọng.</td>
+            <td><input type="radio" name="c22" value="1" required></td><td><input type="radio" name="c22" value="2"></td><td><input type="radio" name="c22" value="3"></td><td><input type="radio" name="c22" value="4"></td><td><input type="radio" name="c22" value="5"></td></tr>
+          <tr class="group-header"><td colspan="6">공감적 실천 / Thực hành đồng cảm (C23–C24)</td></tr>
+          <tr><td class="q-text">C23. Tôi có ý định tham gia quyên góp để giúp đỡ những người đang gặp khủng hoảng.</td>
+            <td><input type="radio" name="c23" value="1" required></td><td><input type="radio" name="c23" value="2"></td><td><input type="radio" name="c23" value="3"></td><td><input type="radio" name="c23" value="4"></td><td><input type="radio" name="c23" value="5"></td></tr>
+          <tr><td class="q-text">C24. Tôi có ý định làm tình nguyện để giúp đỡ người khác.</td>
+            <td><input type="radio" name="c24" value="1" required></td><td><input type="radio" name="c24" value="2"></td><td><input type="radio" name="c24" value="3"></td><td><input type="radio" name="c24" value="4"></td><td><input type="radio" name="c24" value="5"></td></tr>
+          <tr class="group-header"><td colspan="6">공의적 실천 / Thực hành công bằng xã hội (C25–C31)</td></tr>
+          <tr><td class="q-text">C25. Nếu có thể, tôi cố gắng mua các sản phẩm thương mại công bằng.</td>
+            <td><input type="radio" name="c25" value="1" required></td><td><input type="radio" name="c25" value="2"></td><td><input type="radio" name="c25" value="3"></td><td><input type="radio" name="c25" value="4"></td><td><input type="radio" name="c25" value="5"></td></tr>
+          <tr><td class="q-text">C26. Nếu có thể, tôi cố gắng mua sản phẩm của thương hiệu hỗ trợ người hoặc khu vực bị thiệt thòi.</td>
+            <td><input type="radio" name="c26" value="1" required></td><td><input type="radio" name="c26" value="2"></td><td><input type="radio" name="c26" value="3"></td><td><input type="radio" name="c26" value="4"></td><td><input type="radio" name="c26" value="5"></td></tr>
+          <tr><td class="q-text">C27. Tôi cố gắng thường xuyên có cơ hội làm quen với nhiều nền văn hóa.</td>
+            <td><input type="radio" name="c27" value="1" required></td><td><input type="radio" name="c27" value="2"></td><td><input type="radio" name="c27" value="3"></td><td><input type="radio" name="c27" value="4"></td><td><input type="radio" name="c27" value="5"></td></tr>
+          <tr><td class="q-text">C28. Nếu người yếu thế bị đối xử bất công, tôi nỗ lực tìm và làm những việc có thể để cải thiện.</td>
+            <td><input type="radio" name="c28" value="1" required></td><td><input type="radio" name="c28" value="2"></td><td><input type="radio" name="c28" value="3"></td><td><input type="radio" name="c28" value="4"></td><td><input type="radio" name="c28" value="5"></td></tr>
+          <tr><td class="q-text">C29. Nếu có cơ hội làm việc cùng người thuộc nền văn hóa khác, tôi cố gắng tham gia tích cực.</td>
+            <td><input type="radio" name="c29" value="1" required></td><td><input type="radio" name="c29" value="2"></td><td><input type="radio" name="c29" value="3"></td><td><input type="radio" name="c29" value="4"></td><td><input type="radio" name="c29" value="5"></td></tr>
+          <tr><td class="q-text">C30. Tôi có ý định tham gia các hoạt động cộng đồng giải quyết các vấn đề toàn cầu.</td>
+            <td><input type="radio" name="c30" value="1" required></td><td><input type="radio" name="c30" value="2"></td><td><input type="radio" name="c30" value="3"></td><td><input type="radio" name="c30" value="4"></td><td><input type="radio" name="c30" value="5"></td></tr>
+          <tr><td class="q-text">C31. Tôi cố gắng tìm ra những việc mình có thể làm để giải quyết các vấn đề môi trường toàn cầu.</td>
+            <td><input type="radio" name="c31" value="1" required></td><td><input type="radio" name="c31" value="2"></td><td><input type="radio" name="c31" value="3"></td><td><input type="radio" name="c31" value="4"></td><td><input type="radio" name="c31" value="5"></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <!-- ===== D. 교육 경험 ===== -->
+    <div class="section">
+      <div class="section-title">D. Trải nghiệm giáo dục (교육 경험)</div>
+      <p style="font-size:13.5px;color:#444;margin-bottom:14px;">Sau đây là các câu hỏi nhằm xác định trải nghiệm học tập liên quan đến năng lực công dân toàn cầu. Nếu không có trải nghiệm, vui lòng chọn "Không có trải nghiệm".</p>
+      <div class="subsection-title">D1-1. 지식 역량 (C1–C7) / Năng lực kiến thức</div>
+      <div class="d-item">
+        <div class="d-q">Tôi đã có trải nghiệm học tập giúp tích lũy kiến thức về các vấn đề toàn cầu như đói nghèo, bất bình đẳng, nhân quyền, đa dạng văn hóa, môi trường.</div>
+        <div class="d-arrow">▶ Nếu là trải nghiệm trong giờ học, hãy chọn tất cả loại tiết học phù hợp:</div>
+        <div class="checkbox-group">
+          <label><input type="checkbox" name="d11_hoc" value="Không có"> Không có trải nghiệm</label>
+          <label><input type="checkbox" name="d11_hoc" value="Nói"> Nói (말하기)</label>
+          <label><input type="checkbox" name="d11_hoc" value="Viết"> Viết (쓰기)</label>
+          <label><input type="checkbox" name="d11_hoc" value="Đọc"> Đọc (읽기)</label>
+          <label><input type="checkbox" name="d11_hoc" value="Nghe"> Nghe (듣기)</label>
+          <label><input type="checkbox" name="d11_hoc" value="Ngữ pháp"> Ngữ pháp (문법)</label>
+          <label><input type="checkbox" name="d11_hoc" value="Văn học"> Văn học (문학)</label>
+          <label><input type="checkbox" name="d11_hoc" value="Văn hóa"> Văn hóa (문화)</label>
+          <label><input type="checkbox" name="d11_hoc" value="Lịch sử"> Lịch sử (역사)</label>
+          <label><input type="checkbox" name="d11_hoc" value="Đại cương"> Môn học đại cương (교양)</label>
+        </div>
+        <div class="d-arrow">▶ Nếu trải nghiệm qua hoạt động văn hóa, hãy chọn tất cả hoạt động phù hợp:</div>
+        <div class="checkbox-group">
+          <label><input type="checkbox" name="d11_vanhoa" value="Không có"> Không có trải nghiệm</label>
+          <label><input type="checkbox" name="d11_vanhoa" value="Biểu diễn/SK văn hóa"> Tham gia biểu diễn/sự kiện văn hóa HQ</label>
+          <label><input type="checkbox" name="d11_vanhoa" value="Giao lưu người HQ"> Chương trình giao lưu với người Hàn Quốc</label>
+          <label><input type="checkbox" name="d11_vanhoa" value="CLB văn hóa HQ"> Hoạt động câu lạc bộ văn hóa Hàn Quốc</label>
+          <label><input type="checkbox" name="d11_vanhoa" value="Trao đổi/thăm HQ"> Chương trình trao đổi sinh viên/thăm HQ</label>
+          <label><input type="checkbox" name="d11_vanhoa" value="Khác"> Khác</label>
+        </div>
+      </div>
+      <div class="subsection-title">D1-2. 분석적 스킬 역량 (C8–C12) / Năng lực kỹ năng phân tích</div>
+      <div class="d-item">
+        <div class="d-q">Tôi đã có trải nghiệm học tập được học cách tư duy phản biện, phân tích về các vấn đề toàn cầu hoặc tìm kiếm giải pháp cho vấn đề.</div>
+        <div class="d-arrow">▶ Nếu là trải nghiệm trong giờ học:</div>
+        <div class="checkbox-group">
+          <label><input type="checkbox" name="d12_hoc" value="Không có"> Không có trải nghiệm</label>
+          <label><input type="checkbox" name="d12_hoc" value="Nói"> Nói</label>
+          <label><input type="checkbox" name="d12_hoc" value="Viết"> Viết</label>
+          <label><input type="checkbox" name="d12_hoc" value="Đọc"> Đọc</label>
+          <label><input type="checkbox" name="d12_hoc" value="Nghe"> Nghe</label>
+          <label><input type="checkbox" name="d12_hoc" value="Ngữ pháp"> Ngữ pháp</label>
+          <label><input type="checkbox" name="d12_hoc" value="Văn học"> Văn học</label>
+          <label><input type="checkbox" name="d12_hoc" value="Văn hóa"> Văn hóa</label>
+          <label><input type="checkbox" name="d12_hoc" value="Lịch sử"> Lịch sử</label>
+          <label><input type="checkbox" name="d12_hoc" value="Đại cương"> Môn học đại cương</label>
+        </div>
+        <div class="d-arrow">▶ Nếu trải nghiệm qua hoạt động văn hóa:</div>
+        <div class="checkbox-group">
+          <label><input type="checkbox" name="d12_vanhoa" value="Không có"> Không có trải nghiệm</label>
+          <label><input type="checkbox" name="d12_vanhoa" value="Biểu diễn/SK văn hóa"> Tham gia biểu diễn/sự kiện văn hóa HQ</label>
+          <label><input type="checkbox" name="d12_vanhoa" value="Giao lưu người HQ"> Chương trình giao lưu với người Hàn Quốc</label>
+          <label><input type="checkbox" name="d12_vanhoa" value="CLB văn hóa HQ"> Hoạt động câu lạc bộ văn hóa Hàn Quốc</label>
+          <label><input type="checkbox" name="d12_vanhoa" value="Trao đổi/thăm HQ"> Chương trình trao đổi sinh viên/thăm HQ</label>
+          <label><input type="checkbox" name="d12_vanhoa" value="Khác"> Khác</label>
+        </div>
+      </div>
+      <div class="subsection-title">D1-3. 사회적 스킬 역량 (C13–C15) / Năng lực kỹ năng xã hội</div>
+      <div class="d-item">
+        <div class="d-q">Tôi đã có trải nghiệm học tập được học cách giao tiếp, hợp tác với người có nền văn hóa đa dạng hoặc nhận biết điểm mạnh, điểm yếu của bản thân trong cộng đồng toàn cầu.</div>
+        <div class="d-arrow">▶ Nếu là trải nghiệm trong giờ học:</div>
+        <div class="checkbox-group">
+          <label><input type="checkbox" name="d13_hoc" value="Không có"> Không có trải nghiệm</label>
+          <label><input type="checkbox" name="d13_hoc" value="Nói"> Nói</label>
+          <label><input type="checkbox" name="d13_hoc" value="Viết"> Viết</label>
+          <label><input type="checkbox" name="d13_hoc" value="Đọc"> Đọc</label>
+          <label><input type="checkbox" name="d13_hoc" value="Nghe"> Nghe</label>
+          <label><input type="checkbox" name="d13_hoc" value="Ngữ pháp"> Ngữ pháp</label>
+          <label><input type="checkbox" name="d13_hoc" value="Văn học"> Văn học</label>
+          <label><input type="checkbox" name="d13_hoc" value="Văn hóa"> Văn hóa</label>
+          <label><input type="checkbox" name="d13_hoc" value="Lịch sử"> Lịch sử</label>
+          <label><input type="checkbox" name="d13_hoc" value="Đại cương"> Môn học đại cương</label>
+        </div>
+        <div class="d-arrow">▶ Nếu trải nghiệm qua hoạt động văn hóa:</div>
+        <div class="checkbox-group">
+          <label><input type="checkbox" name="d13_vanhoa" value="Không có"> Không có trải nghiệm</label>
+          <label><input type="checkbox" name="d13_vanhoa" value="Biểu diễn/SK văn hóa"> Tham gia biểu diễn/sự kiện văn hóa HQ</label>
+          <label><input type="checkbox" name="d13_vanhoa" value="Giao lưu người HQ"> Chương trình giao lưu với người Hàn Quốc</label>
+          <label><input type="checkbox" name="d13_vanhoa" value="CLB văn hóa HQ"> Hoạt động câu lạc bộ văn hóa Hàn Quốc</label>
+          <label><input type="checkbox" name="d13_vanhoa" value="Trao đổi/thăm HQ"> Chương trình trao đổi sinh viên/thăm HQ</label>
+          <label><input type="checkbox" name="d13_vanhoa" value="Khác"> Khác</label>
+        </div>
+      </div>
+      <div class="subsection-title">D1-4. 태도 역량 (C16–C22) / Năng lực thái độ</div>
+      <div class="d-item">
+        <div class="d-q">Tôi đã có trải nghiệm học tập giúp hình thành giá trị quan và thái độ của công dân toàn cầu như tôn trọng phẩm giá con người, bình đẳng, đa dạng văn hóa, công nhận tôn giáo của người khác.</div>
+        <div class="d-arrow">▶ Nếu là trải nghiệm trong giờ học:</div>
+        <div class="checkbox-group">
+          <label><input type="checkbox" name="d14_hoc" value="Không có"> Không có trải nghiệm</label>
+          <label><input type="checkbox" name="d14_hoc" value="Nói"> Nói</label>
+          <label><input type="checkbox" name="d14_hoc" value="Viết"> Viết</label>
+          <label><input type="checkbox" name="d14_hoc" value="Đọc"> Đọc</label>
+          <label><input type="checkbox" name="d14_hoc" value="Nghe"> Nghe</label>
+          <label><input type="checkbox" name="d14_hoc" value="Ngữ pháp"> Ngữ pháp</label>
+          <label><input type="checkbox" name="d14_hoc" value="Văn học"> Văn học</label>
+          <label><input type="checkbox" name="d14_hoc" value="Văn hóa"> Văn hóa</label>
+          <label><input type="checkbox" name="d14_hoc" value="Lịch sử"> Lịch sử</label>
+          <label><input type="checkbox" name="d14_hoc" value="Đại cương"> Môn học đại cương</label>
+        </div>
+        <div class="d-arrow">▶ Nếu trải nghiệm qua hoạt động văn hóa:</div>
+        <div class="checkbox-group">
+          <label><input type="checkbox" name="d14_vanhoa" value="Không có"> Không có trải nghiệm</label>
+          <label><input type="checkbox" name="d14_vanhoa" value="Biểu diễn/SK văn hóa"> Tham gia biểu diễn/sự kiện văn hóa HQ</label>
+          <label><input type="checkbox" name="d14_vanhoa" value="Giao lưu người HQ"> Chương trình giao lưu với người Hàn Quốc</label>
+          <label><input type="checkbox" name="d14_vanhoa" value="CLB văn hóa HQ"> Hoạt động câu lạc bộ văn hóa Hàn Quốc</label>
+          <label><input type="checkbox" name="d14_vanhoa" value="Trao đổi/thăm HQ"> Chương trình trao đổi sinh viên/thăm HQ</label>
+          <label><input type="checkbox" name="d14_vanhoa" value="Khác"> Khác</label>
+        </div>
+      </div>
+      <div class="subsection-title">D1-5. 공감적 실천 역량 (C23–C24) / Năng lực thực hành đồng cảm</div>
+      <div class="d-item">
+        <div class="d-q">Tôi đã có cơ hội trải nghiệm các hoạt động thực hành thể hiện sự đồng cảm và giúp đỡ người khác như quyên góp, tình nguyện.</div>
+        <div class="d-arrow">▶ Nếu trải nghiệm qua hoạt động văn hóa:</div>
+        <div class="checkbox-group">
+          <label><input type="checkbox" name="d15_vanhoa" value="Không có"> Không có trải nghiệm</label>
+          <label><input type="checkbox" name="d15_vanhoa" value="Biểu diễn/SK văn hóa"> Tham gia biểu diễn/sự kiện văn hóa HQ</label>
+          <label><input type="checkbox" name="d15_vanhoa" value="Giao lưu người HQ"> Chương trình giao lưu với người Hàn Quốc</label>
+          <label><input type="checkbox" name="d15_vanhoa" value="CLB văn hóa HQ"> Hoạt động câu lạc bộ văn hóa Hàn Quốc</label>
+          <label><input type="checkbox" name="d15_vanhoa" value="Trao đổi/thăm HQ"> Chương trình trao đổi sinh viên/thăm HQ</label>
+          <label><input type="checkbox" name="d15_vanhoa" value="Khác"> Khác</label>
+        </div>
+      </div>
+      <div class="subsection-title">D1-6. 공의적 실천 역량 (C25–C31) / Năng lực thực thi công bằng xã hội</div>
+      <div class="d-item">
+        <div class="d-q">Tôi đã có trải nghiệm thực thi vì công bằng xã hội như ủng hộ thương mại công bằng, hỗ trợ khu vực thiệt thòi, tham gia hoạt động công dân, bảo vệ người yếu thế, trải nghiệm đa văn hóa, nỗ lực giải quyết vấn đề môi trường.</div>
+        <div class="d-arrow">▶ Nếu trải nghiệm qua hoạt động văn hóa:</div>
+        <div class="checkbox-group">
+          <label><input type="checkbox" name="d16_vanhoa" value="Không có"> Không có trải nghiệm</label>
+          <label><input type="checkbox" name="d16_vanhoa" value="Biểu diễn/SK văn hóa"> Tham gia biểu diễn/sự kiện văn hóa HQ</label>
+          <label><input type="checkbox" name="d16_vanhoa" value="Giao lưu người HQ"> Chương trình giao lưu với người Hàn Quốc</label>
+          <label><input type="checkbox" name="d16_vanhoa" value="CLB văn hóa HQ"> Hoạt động câu lạc bộ văn hóa Hàn Quốc</label>
+          <label><input type="checkbox" name="d16_vanhoa" value="Trao đổi/thăm HQ"> Chương trình trao đổi sinh viên/thăm HQ</label>
+          <label><input type="checkbox" name="d16_vanhoa" value="Khác"> Khác</label>
+        </div>
+      </div>
+      <div class="subsection-title">D2. Trong số các mục bạn đã chọn có trải nghiệm ở trên, hãy tự do ghi tên môn học hoặc hoạt động cụ thể mà bạn nhớ nhất.</div>
+      <textarea name="d2_ghinhan" placeholder="Ví dụ: môn Văn hóa Hàn Quốc, chương trình giao lưu sinh viên..."></textarea>
+    </div>
+    <hr style="margin: 0 32px;">
+    <div id="formMsg" style="display:none; margin: 20px 32px 0; padding: 12px 16px; border-radius: 8px; font-size: 14px; text-align:center;"></div>
+    <div class="submit-area">
+      <p style="margin-bottom:16px;color:#555;font-size:14px;">설문에 응해 주셔서 진심으로 감사합니다! &nbsp;|&nbsp; Cảm ơn bạn đã tham gia khảo sát!</p>
+      <button type="button" class="btn-submit" onclick="submitSurvey()">제출하기 / Gửi khảo sát</button>
+    </div>
+  </form>
+  <div id="success-msg">
+    ✅ 제출이 완료되었습니다! 설문에 참여해 주셔서 감사합니다.<br>
+    Khảo sát đã được ghi nhận. Cảm ơn bạn rất nhiều!
+  </div>
+</div>
+<script>
+  // ★ Apps Script URL
+  const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwc8punPF_3WXIIFX26YudJdxabgQV3TzRN8wJ4jnjryKg5LAv_iPLUvCiAWejc6vokpw/exec';
+  function getCheckboxValues(name) {
+    const checked = document.querySelectorAll(`input[name="${name}"]:checked`);
+    return Array.from(checked).map(cb => cb.value).join(', ') || '';
+  }
+  function showMsg(text, isError = true) {
+    const box = document.getElementById('formMsg');
+    box.textContent = text;
+    box.style.display = 'block';
+    box.style.background = isError ? '#fdecea' : '#e8f5ec';
+    box.style.color = isError ? '#c62828' : '#1a6b3a';
+    box.style.border = '1.5px solid ' + (isError ? '#e53935' : '#2e8b57');
+    box.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+  function submitSurvey() {
+    const form = document.getElementById('surveyForm');
+    const required_radio = ['gioitinh','namhoc','mssv','trinhdo','thoigian','kinhnghiem','b1'];
+    for (const name of required_radio) {
+      const el = form.querySelector(`[name="${name}"]`);
+      if (!el) continue;
+      if (el.type === 'text') {
+        if (!el.value.trim()) { showMsg(`"${name}" 항목을 입력해 주세요.`); el.focus(); return; }
+      } else {
+        const checked = form.querySelector(`input[name="${name}"]:checked`);
+        if (!checked) { showMsg('A섹션/B섹션 필수 항목을 모두 선택해 주세요.'); return; }
+      }
+    }
+    for (let i = 1; i <= 31; i++) {
+      if (!form.querySelector(`input[name="c${i}"]:checked`)) {
+        showMsg(`C${i} 항목을 선택해 주세요.`); return;
+      }
+    }
+    const data = {
+      제출시각: new Date().toLocaleString('ko-KR'),
+      성별: form.querySelector('input[name="gioitinh"]:checked')?.value || '',
+      학년: form.querySelector('input[name="namhoc"]:checked')?.value || '',
+      MSSV: form.querySelector('input[name="mssv"]')?.value || '',
+      한국어수준: form.querySelector('input[name="trinhdo"]:checked')?.value || '',
+      학습기간: form.querySelector('input[name="thoigian"]:checked')?.value || '',
+      방문경험: form.querySelector('input[name="kinhnghiem"]:checked')?.value || '',
+      B1_인지: form.querySelector('input[name="b1"]:checked')?.value || '',
+      B2_설명능력: form.querySelector('input[name="b2"]:checked')?.value || '',
+    };
+    for (let i = 1; i <= 31; i++) {
+      data[`C${i}`] = form.querySelector(`input[name="c${i}"]:checked`)?.value || '';
+    }
+    const dFields = ['d11_hoc','d11_vanhoa','d12_hoc','d12_vanhoa','d13_hoc','d13_vanhoa',
+                     'd14_hoc','d14_vanhoa','d15_vanhoa','d16_vanhoa'];
+    dFields.forEach(f => { data[f] = getCheckboxValues(f); });
+    data['D2_자유기술'] = form.querySelector('textarea[name="d2_ghinhan"]')?.value || '';
+    if (APPS_SCRIPT_URL === 'YOUR_APPS_SCRIPT_URL_HERE') {
+      showMsg('Apps Script URL을 설정해 주세요! (HTML 파일 하단 APPS_SCRIPT_URL 변수)');
+      return;
+    }
+    const btn = document.querySelector('.btn-submit');
+    btn.textContent = '제출 중...'; btn.disabled = true;
+    fetch(APPS_SCRIPT_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data)
+    }).then(() => {
+      document.getElementById('formMsg').style.display = 'none';
+      document.getElementById('surveyForm').style.display = 'none';
+      document.getElementById('success-msg').style.display = 'block';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }).catch(err => {
+      showMsg('오류가 발생했습니다: ' + err);
+      btn.textContent = '제출하기 / Gửi khảo sát'; btn.disabled = false;
+    });
+  }
+</script>
+</body>
+</html>
